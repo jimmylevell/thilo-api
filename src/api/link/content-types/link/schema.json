@@ -2,7 +2,7 @@
   "kind": "collectionType",
   "collectionName": "links",
   "info": {
-    "singularName": "links",
+    "singularName": "link",
     "pluralName": "links",
     "displayName": "Links",
     "description": ""

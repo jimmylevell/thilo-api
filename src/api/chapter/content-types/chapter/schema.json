@@ -79,7 +79,7 @@
     "link": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::links.links",
+      "target": "api::links.link",
       "mappedBy": "chapter"
     },
     "icon": {
