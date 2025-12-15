@@ -1,34 +1,36 @@
 ###############################################################################################
 # THILO API - BASE
 ###############################################################################################
-FROM node:lts as thilo-api-base
-
-# based on https://stackoverflow.com/questions/69394632/webpack-build-failing-with-err-ossl-evp-unsupported
-ENV NODE_OPTIONS=--openssl-legacy-provider
+FROM node:20-slim as thilo-api-base
 
 RUN mkdir -p /docker
 WORKDIR /srv/app
 
-RUN apt-get update
-RUN apt-get install dos2unix -y
+ENV NODE_ENV=production
 
 ###############################################################################################
 # THILO API - PRODUCTION
 ###############################################################################################
 FROM thilo-api-base as thilo-api-production
 
+# Install dos2unix
+RUN apt-get update && apt-get install -y dos2unix && rm -rf /var/lib/apt/lists/*
+
+# Copy and configure scripts
 COPY ./docker/custom_entrypoint.sh /docker/custom_entrypoint.sh
-RUN chmod +x /docker/custom_entrypoint.sh
-RUN dos2unix /docker/custom_entrypoint.sh
-
 COPY ./docker/set_env_secrets.sh /docker/set_env_secrets.sh
-RUN chmod +x /docker/set_env_secrets.sh
-RUN dos2unix /docker/set_env_secrets.sh
+RUN chmod +x /docker/custom_entrypoint.sh /docker/set_env_secrets.sh && \
+    dos2unix /docker/custom_entrypoint.sh /docker/set_env_secrets.sh
 
-# Install strapi
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm ci --only=production --ignore-scripts
+
+# Copy application code
 COPY . .
-RUN npm install
-RUN npm run build
+
+# Build application
+RUN NODE_ENV=production npm run build
 
 EXPOSE 1337
 ENTRYPOINT [ "/docker/custom_entrypoint.sh" ]
