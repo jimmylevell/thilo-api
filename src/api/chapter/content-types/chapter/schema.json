@@ -1,0 +1,122 @@
+{
+  "kind": "collectionType",
+  "collectionName": "chapters",
+  "info": {
+    "singularName": "chapter",
+    "pluralName": "chapters",
+    "displayName": "Chapter",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "unique": true,
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "content": {
+      "type": "richtext",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "section": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::section.section",
+      "inversedBy": "chapters"
+    },
+    "responsible": {
+      "type": "component",
+      "repeatable": true,
+      "component": "rollen.auswahl",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "sorting": {
+      "type": "integer",
+      "required": true,
+      "unique": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "tasks": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::task.task",
+      "inversedBy": "chapters"
+    },
+    "link": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::links.link",
+      "mappedBy": "chapter"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "slug_with_section": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "menu_name": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "line_height": {
+      "type": "decimal",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    }
+  }
+}
